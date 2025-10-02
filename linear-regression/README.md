@@ -1,3 +1,0 @@
-# Linear Regression
-
-Description here.
