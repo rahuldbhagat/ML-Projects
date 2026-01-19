@@ -35,7 +35,9 @@ def load_mnist(path, kind='train'):
     return images, labels
 
 # Load the data
-data_dir = r'mnist_data'  
+data_dir = os.path.join(os.path.dirname(__file__), 'mnist_data')
+
+
 print(f"Data directory: {os.path.abspath(data_dir)}")
 
 X_train, y_train = load_mnist(data_dir, kind='train')
