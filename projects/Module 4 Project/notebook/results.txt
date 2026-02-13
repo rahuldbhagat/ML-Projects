@@ -1,0 +1,3 @@
+Config: {'conv_filters': [32, 64], 'fc_layers': [128], 'use_pool': True, 'stride': 1, 'epochs': 10} Test Acc: 0.4166666666666667
+Config: {'conv_filters': [32, 64, 128], 'fc_layers': [256, 128], 'use_pool': True, 'stride': 1, 'epochs': 15} Test Acc: 0.4445454545454545
+Config: {'conv_filters': [32, 64], 'fc_layers': [128], 'use_pool': False, 'stride': 2, 'epochs': 10} Test Acc: 0.3381818181818182
