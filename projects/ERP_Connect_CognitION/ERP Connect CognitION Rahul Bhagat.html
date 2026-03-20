@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Connect CognitION – AI Support for Enterprise Integrations</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0F172A;
+            --secondary: #1E293B;
+            --accent: #06B6D4;
+            --accent-glow: #22D3EE;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --text: #F8FAFC;
+            --text-muted: #94A3B8;
+            --card-bg: rgba(30, 41, 59, 0.6);
+            --border: rgba(148, 163, 184, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(ellipse 80% 50% at 20% -20%, rgba(6, 182, 212, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 100%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+                linear-gradient(180deg, var(--primary) 0%, #0C1222 100%);
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: 
+                linear-gradient(rgba(148, 163, 184, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(148, 163, 184, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--success) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease 0.1s both;
+        }
+
+        h1 span {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--success) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .hero-subtitle {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem !important;
+            color: var(--accent) !important;
+            margin-bottom: 1rem !important;
+            font-weight: 500;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            animation: fadeInUp 0.8s ease 0.3s both;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent) 0%, #0891B2 100%);
+            color: var(--primary);
+            border: none;
+            box-shadow: 0 4px 20px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(6, 182, 212, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Hero Visual */
+        .hero-visual {
+            position: absolute;
+            right: 4rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 500px;
+            height: 400px;
+            animation: fadeInRight 1s ease 0.4s both;
+        }
+
+        .architecture-preview {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .architecture-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--success), var(--accent));
+        }
+
+        .arch-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .arch-node {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            background: rgba(6, 182, 212, 0.05);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .arch-node-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent), var(--success));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .arch-arrow {
+            text-align: center;
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translate(30px, -50%); }
+            to { opacity: 1; transform: translate(0, -50%); }
+        }
+
+        /* Sections */
+        section {
+            padding: 6rem 4rem;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Problem Section */
+        #problem {
+            background: linear-gradient(180deg, transparent 0%, rgba(239, 68, 68, 0.03) 50%, transparent 100%);
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .problem-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .problem-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--danger);
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .problem-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .problem-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .problem-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Stats Banner */
+        .stats-banner {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 3rem;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 4rem auto 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Solution Section */
+        #solution {
+            background: linear-gradient(180deg, transparent 0%, rgba(6, 182, 212, 0.03) 50%, transparent 100%);
+        }
+
+        .solution-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .solution-highlight {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .solution-highlight::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--success));
+        }
+
+        .solution-highlight h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .solution-highlight p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 800px;
+        }
+
+        .approach-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .approach-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .approach-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .approach-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent);
+            opacity: 0.3;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .approach-card h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .approach-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tech-tag {
+            padding: 0.35rem 0.75rem;
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent);
+        }
+
+        /* Architecture Section */
+        #architecture {
+            background: linear-gradient(180deg, transparent 0%, rgba(16, 185, 129, 0.03) 50%, transparent 100%);
+        }
+
+        .architecture-diagram {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 3rem;
+            position: relative;
+        }
+
+        .arch-layers {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .arch-layer {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .arch-layer-label {
+            width: 120px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .arch-layer-content {
+            flex: 1;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .arch-component {
+            padding: 1rem 1.5rem;
+            background: rgba(6, 182, 212, 0.08);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .arch-component:hover {
+            background: rgba(6, 182, 212, 0.15);
+            border-color: var(--accent);
+        }
+
+        .arch-component.highlight {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%);
+            border-color: var(--accent);
+        }
+
+        .arch-connector {
+            text-align: center;
+            padding: 0.5rem;
+        }
+
+        .arch-connector svg {
+            width: 24px;
+            height: 24px;
+            color: var(--accent);
+        }
+
+        /* Domain Coverage */
+        #domain {
+            background: linear-gradient(180deg, transparent 0%, rgba(245, 158, 11, 0.03) 50%, transparent 100%);
+        }
+
+        .domain-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .domain-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .domain-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--warning);
+        }
+
+        .domain-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(245, 158, 11, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin: 0 auto 1rem;
+        }
+
+        .domain-card h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .domain-card p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .domain-count {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--warning);
+            margin-top: 0.5rem;
+        }
+
+        /* Tech Stack Section */
+        #tech-stack {
+            background: linear-gradient(180deg, transparent 0%, rgba(6, 182, 212, 0.03) 50%, transparent 100%);
+        }
+
+        .tech-stack-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tech-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .tech-table thead {
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .tech-table th {
+            padding: 1.25rem 1.5rem;
+            text-align: left;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--accent);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tech-table td {
+            padding: 1rem 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        .tech-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tech-table tbody tr:hover {
+            background: rgba(6, 182, 212, 0.03);
+        }
+
+        .tech-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            color: var(--text);
+            background: rgba(6, 182, 212, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .tech-category {
+            font-size: 0.8rem;
+            color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+            padding: 0.25rem 0.6rem;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .design-principles {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .design-principles h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .principle-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: rgba(6, 182, 212, 0.05);
+            border: 1px solid rgba(6, 182, 212, 0.1);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .principle-item:hover {
+            border-color: var(--accent);
+            background: rgba(6, 182, 212, 0.08);
+        }
+
+        .principle-icon {
+            font-size: 1.5rem;
+        }
+
+        .principle-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .principle-text strong {
+            color: var(--text);
+        }
+
+        /* Assumptions & Limitations */
+        #considerations {
+            background: linear-gradient(180deg, transparent 0%, rgba(148, 163, 184, 0.03) 50%, transparent 100%);
+        }
+
+        .considerations-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .consideration-section h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .consideration-list {
+            list-style: none;
+        }
+
+        .consideration-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .consideration-list li:hover {
+            border-color: var(--accent);
+        }
+
+        .consideration-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 0.85rem;
+        }
+
+        .assumption .consideration-icon {
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--accent);
+        }
+
+        .limitation .consideration-icon {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .consideration-text strong {
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .consideration-text span {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Next Steps */
+        #next-steps {
+            background: linear-gradient(180deg, transparent 0%, rgba(16, 185, 129, 0.05) 50%, transparent 100%);
+        }
+
+        .timeline {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 28px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--accent), var(--success));
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .timeline-marker {
+            width: 56px;
+            height: 56px;
+            background: var(--secondary);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            color: var(--accent);
+            z-index: 1;
+        }
+
+        .timeline-content {
+            flex: 1;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .timeline-content h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .timeline-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .timeline-duration {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+        }
+
+        /* Demo Section */
+        #demo {
+            background: linear-gradient(180deg, transparent 0%, rgba(6, 182, 212, 0.05) 100%);
+        }
+
+        .demo-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        .demo-header {
+            background: var(--secondary);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .demo-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .demo-dot.red { background: #EF4444; }
+        .demo-dot.yellow { background: #F59E0B; }
+        .demo-dot.green { background: #10B981; }
+
+        .demo-title {
+            margin-left: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .demo-content {
+            padding: 2rem;
+        }
+
+        .demo-input, .demo-output {
+            margin-bottom: 1.5rem;
+        }
+
+        .demo-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .demo-label::before {
+            content: '>';
+            color: var(--accent);
+        }
+
+        .demo-box {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .demo-input .demo-box {
+            color: var(--warning);
+        }
+
+        .demo-output .demo-box {
+            color: var(--success);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        /* CTA Section */
+        #cta {
+            text-align: center;
+            padding: 8rem 4rem;
+        }
+
+        #cta h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        #cta p {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 4rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .hero-visual {
+                display: none;
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 992px) {
+            nav {
+                padding: 1rem 2rem;
+            }
+
+            section {
+                padding: 4rem 2rem;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .problem-grid,
+            .approach-grid,
+            .considerations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .domain-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats-banner {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .hero {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            section {
+                padding: 3rem 1.5rem;
+            }
+
+            .domain-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-banner {
+                grid-template-columns: 1fr;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <div class="grid-overlay"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            
+            ERP Connect CognitION
+        </div>
+        <ul class="nav-links">
+            <li><a href="#problem">Problem</a></li>
+            <li><a href="#solution">Solution</a></li>
+            <li><a href="#architecture">Architecture</a></li>
+            <li><a href="#tech-stack">Tech Stack</a></li>
+            <li><a href="#considerations">Considerations</a></li>
+            <li><a href="#next-steps">Next Steps</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="badge">Strategic Initiative 2026</div>
+            <h1>ERP Connect <span>CognitION</span></h1>
+            <p class="hero-subtitle">AI Support for Enterprise Integrations</p>
+            <p>Leveraging domain-specific AI to revolutionize ERP-Connect middleware integration support, reducing response times and improving accuracy through intelligent automation.</p>
+        </div>
+        <div class="hero-visual">
+            <div class="architecture-preview">
+                <div class="arch-flow">
+                    <div class="arch-node">
+                        <div class="arch-node-icon">❓</div>
+                        <span>Query</span>
+                    </div>
+                    <div class="arch-arrow">↓</div>
+                    <div class="arch-node">
+                        <div class="arch-node-icon">🔍</div>
+                        <span>RAG Context Retrieval</span>
+                    </div>
+                    <div class="arch-arrow">↓</div>
+                    <div class="arch-node">
+                        <div class="arch-node-icon">🧠</div>
+                        <span>Fine-Tuned LLM</span>
+                    </div>
+                    <div class="arch-arrow">↓</div>
+                    <div class="arch-node">
+                        <div class="arch-node-icon">✅</div>
+                        <span>Domain-Aware Response</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section id="problem">
+        <div class="section-header fade-in">
+            <div class="section-label">The Challenge</div>
+            <h2>Why Generic LLMs Fall Short</h2>
+            <p class="section-desc">Our ERP-Connect middleware integration presents unique challenges that off-the-shelf AI models cannot address effectively.</p>
+        </div>
+
+        <div class="problem-grid">
+            <div class="problem-card fade-in">
+                <div class="problem-icon">🎯</div>
+                <h3>Lack of Domain Knowledge</h3>
+                <p>Generic LLMs don't understand ERP-Connect terminology, SAP IDoc structures, or integration-specific error patterns. They provide vague, unhelpful responses.</p>
+            </div>
+            <div class="problem-card fade-in">
+                <div class="problem-icon">⏱️</div>
+                <h3>Slow Resolution Times</h3>
+                <p>Support teams spend hours explaining complex middleware issues. Customers wait for experts while facing production outages.</p>
+            </div>
+            <div class="problem-card fade-in">
+                <div class="problem-icon">📚</div>
+                <h3>Knowledge Silos</h3>
+                <p>Critical troubleshooting knowledge lives in experts' heads. New team members face steep learning curves with no centralized resource.</p>
+            </div>
+        </div>
+
+        <div class="stats-banner fade-in">
+            <div class="stat-item">
+                <div class="stat-value">45min</div>
+                <div class="stat-label">Avg. First Response Time</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">68%</div>
+                <div class="stat-label">Queries Need Escalation</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">12</div>
+                <div class="stat-label">Integration Points</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">500+</div>
+                <div class="stat-label">Unique Error Scenarios</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section id="solution">
+        <div class="section-header fade-in">
+            <div class="section-label">Our Approach</div>
+            <h2>Hybrid Fine-Tuning + RAG Architecture</h2>
+            <p class="section-desc">Combining the best of both worlds for maximum accuracy and domain expertise.</p>
+        </div>
+
+        <div class="solution-container">
+            <div class="solution-highlight fade-in">
+                <h3>
+                    <span style="font-size: 1.5rem;">💡</span>
+                    Hypothesis
+                </h3>
+                <p>Fine-tuning teaches the model our domain language and patterns. RAG grounds responses in real FAQ data. Together, they eliminate hallucinations while enabling natural, expert-level conversations.</p>
+            </div>
+
+            <div class="approach-grid">
+                <div class="approach-card fade-in">
+                    <div class="approach-number">01</div>
+                    <h4>Model Fine-Tuning (LoRA)</h4>
+                    <p>Adapt DistilGPT-2 to understand ERP-Connect terminology, error patterns, and troubleshooting flows without massive compute costs.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">DistilGPT-2</span>
+                        <span class="tech-tag">LoRA</span>
+                        <span class="tech-tag">PEFT</span>
+                        <span class="tech-tag">~0.5M params</span>
+                    </div>
+                </div>
+                <div class="approach-card fade-in">
+                    <div class="approach-number">02</div>
+                    <h4>RAG Pipeline</h4>
+                    <p>Retrieve relevant FAQ context at inference time, ensuring responses are grounded in verified documentation.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">ChromaDB</span>
+                        <span class="tech-tag">SentenceTransformers</span>
+                        <span class="tech-tag">Top-K Retrieval</span>
+                    </div>
+                </div>
+                <div class="approach-card fade-in">
+                    <div class="approach-number">03</div>
+                    <h4>Domain Dataset</h4>
+                    <p>Curated ~1000 Q&A pairs covering HTTP errors, AWS services, SAP integration, and ERP-Connect specific scenarios.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">1000+ Q&A</span>
+                        <span class="tech-tag">10 Categories</span>
+                        <span class="tech-tag">JSONL Format</span>
+                    </div>
+                </div>
+                <div class="approach-card fade-in">
+                    <div class="approach-number">04</div>
+                    <h4>Evaluation Framework</h4>
+                    <p>Comprehensive testing with automated metrics and manual review to ensure production-ready quality.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">BLEU</span>
+                        <span class="tech-tag">ROUGE-L</span>
+                        <span class="tech-tag">Cosine Sim</span>
+                        <span class="tech-tag">Manual QA</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="architecture">
+        <div class="section-header fade-in">
+            <div class="section-label">Technical Design</div>
+            <h2>System Architecture</h2>
+            <p class="section-desc">How the AI-powered support system integrates with our existing ERP-Connect infrastructure.</p>
+        </div>
+
+        <div class="architecture-diagram fade-in">
+            <div class="arch-layers">
+                <div class="arch-layer">
+                    <div class="arch-layer-label">User Layer</div>
+                    <div class="arch-layer-content">
+                        <div class="arch-component">
+                            <span>👤</span>
+                            Query
+                        </div>
+                        <div class="arch-component">
+                            <span>💬</span>
+                            Gradio Interface
+                        </div>
+                        <div class="arch-component">
+                            <span>🖥️</span>
+                            CLI Tool
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-connector">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12l7 7 7-7"/>
+                    </svg>
+                </div>
+
+                <div class="arch-layer">
+                    <div class="arch-layer-label">AI Layer</div>
+                    <div class="arch-layer-content">
+                        <div class="arch-component highlight">
+                            <span>🔍</span>
+                            Query Embedding
+                        </div>
+                        <div class="arch-component highlight">
+                            <span>📚</span>
+                            ChromaDB (RAG)
+                        </div>
+                        <div class="arch-component highlight">
+                            <span>🧠</span>
+                            Fine-Tuned LLM
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-connector">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12l7 7 7-7"/>
+                    </svg>
+                </div>
+
+                <div class="arch-layer">
+                    <div class="arch-layer-label">Data Layer</div>
+                    <div class="arch-layer-content">
+                        <div class="arch-component">
+                            <span>📋</span>
+                            FAQ Knowledge Base
+                        </div>
+                        <div class="arch-component">
+                            <span>🔗</span>
+                            Vector Embeddings
+                        </div>
+                        <div class="arch-component">
+                            <span>💾</span>
+                            Model Checkpoints
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-connector">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12l7 7 7-7"/>
+                    </svg>
+                </div>
+
+                <div class="arch-layer">
+                    <div class="arch-layer-label">Integration</div>
+                    <div class="arch-layer-content">
+                        <div class="arch-component">
+                            <span>🌐</span>
+                            API Gateway
+                        </div>
+                        <div class="arch-component">
+                            <span>⚖️</span>
+                            NLB / ALB
+                        </div>
+                        <div class="arch-component">
+                            <span>🐳</span>
+                            ECS Fargate
+                        </div>
+                        <div class="arch-component">
+                            <span>📨</span>
+                            SQS / SNS
+                        </div>
+                        <div class="arch-component">
+                            <span>🗄️</span>
+                            RDS + MemCache
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Domain Coverage Section -->
+    <section id="domain">
+        <div class="section-header fade-in">
+            <div class="section-label">Coverage</div>
+            <h2>Domain Knowledge Areas</h2>
+            <p class="section-desc">Comprehensive FAQ coverage across all integration touchpoints.</p>
+        </div>
+
+        <div class="domain-grid">
+            <div class="domain-card fade-in">
+                <div class="domain-icon">🌐</div>
+                <h4>HTTP Errors</h4>
+                <p>400, 401, 403, 404, 500, 502, 503, 504</p>
+                <div class="domain-count">~100</div>
+            </div>
+            <div class="domain-card fade-in">
+                <div class="domain-icon">🚪</div>
+                <h4>API Gateway</h4>
+                <p>Rate limiting, auth, timeouts</p>
+                <div class="domain-count">~80</div>
+            </div>
+            <div class="domain-card fade-in">
+                <div class="domain-icon">🐳</div>
+                <h4>ECS / Fargate</h4>
+                <p>Container issues, OOM, scaling</p>
+                <div class="domain-count">~100</div>
+            </div>
+            <div class="domain-card fade-in">
+                <div class="domain-icon">📨</div>
+                <h4>SQS / SNS</h4>
+                <p>Message delays, DLQ, fanout</p>
+                <div class="domain-count">~100</div>
+            </div>
+            <div class="domain-card fade-in">
+                <div class="domain-icon">🗄️</div>
+                <h4>RDS / Database</h4>
+                <p>Connections, deadlocks, failover</p>
+                <div class="domain-count">~100</div>
+            </div>
+            <div class="domain-card fade-in">
+                <div class="domain-icon">⚡</div>
+                <h4>MemCache</h4>
+                <p>Cache misses, evictions, TTL</p>
+                <div class="domain-count">~80</div>
+            </div>
+            <div class="domain-card fade-in">
+                <div class="domain-icon">📦</div>
+                <h4>SAP Integration</h4>
+                <p>IDoc, BAPI, RFC, mappings</p>
+                <div class="domain-count">~150</div>
+            </div>
+            <div class="domain-card fade-in">
+                <div class="domain-icon">📊</div>
+                <h4>ERP-Connect Specific</h4>
+                <p>Contracts, positions, trades</p>
+                <div class="domain-count">~150</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section id="tech-stack">
+        <div class="section-header fade-in">
+            <div class="section-label">Technology</div>
+            <h2>Tech Stack & Significance</h2>
+            <p class="section-desc">Open-source, cost-effective technologies powering ERP Connect CognitION.</p>
+        </div>
+
+        <div class="tech-stack-container fade-in">
+            <table class="tech-table">
+                <thead>
+                    <tr>
+                        <th>Technology</th>
+                        <th>Category</th>
+                        <th>Significance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="tech-name">DistilGPT-2</span></td>
+                        <td><span class="tech-category">Base Model</span></td>
+                        <td>Lightweight (82M params), fast inference, low compute requirements. Ideal for fine-tuning on limited resources like free Colab GPU.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tech-name">LoRA</span></td>
+                        <td><span class="tech-category">Fine-Tuning Method</span></td>
+                        <td>Reduces trainable parameters from 82M to ~0.5M. Enables efficient domain adaptation without full model retraining, saving time and cost.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tech-name">PEFT</span></td>
+                        <td><span class="tech-category">Training Library</span></td>
+                        <td>Hugging Face library that implements LoRA. Simplifies adapter-based training and checkpoint management.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tech-name">Hugging Face Transformers</span></td>
+                        <td><span class="tech-category">ML Framework</span></td>
+                        <td>Industry-standard library for loading, training, and deploying LLMs. Provides Trainer API for streamlined training loops.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tech-name">ChromaDB</span></td>
+                        <td><span class="tech-category">Vector Database</span></td>
+                        <td>Lightweight, open-source vector store for RAG. Stores FAQ embeddings for fast similarity search at inference time.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tech-name">SentenceTransformers</span></td>
+                        <td><span class="tech-category">Embedding Model</span></td>
+                        <td>Generates semantic embeddings (all-MiniLM-L6-v2) for queries and FAQs. Enables accurate context retrieval in RAG pipeline.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tech-name">RAG</span></td>
+                        <td><span class="tech-category">Architecture Pattern</span></td>
+                        <td>Grounds model responses in real FAQ data, reducing hallucinations. Allows knowledge updates without retraining.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tech-name">Gradio</span></td>
+                        <td><span class="tech-category">UI Framework</span></td>
+                        <td>Rapid prototyping of web-based demo interface. Enables non-technical stakeholders to test the model easily.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tech-name">Google Colab (T4 GPU)</span></td>
+                        <td><span class="tech-category">Compute Platform</span></td>
+                        <td>Free GPU access for training. Democratizes LLM fine-tuning without infrastructure investment.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tech-name">JSONL</span></td>
+                        <td><span class="tech-category">Data Format</span></td>
+                        <td>Standard format for training data. Each line is a self-contained JSON object, enabling streaming and easy validation.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tech-name">BLEU / ROUGE-L</span></td>
+                        <td><span class="tech-category">Evaluation Metrics</span></td>
+                        <td>Automated metrics for measuring response quality against reference answers. Provides quantitative benchmarks.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tech-name">Cosine Similarity</span></td>
+                        <td><span class="tech-category">Evaluation Metric</span></td>
+                        <td>Measures semantic similarity between generated and expected responses using embeddings. Captures meaning beyond exact word matches.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="design-principles">
+                <h4>Key Design Principles</h4>
+                <div class="principles-grid">
+                    <div class="principle-item">
+                        <span class="principle-icon">💰</span>
+                        <span class="principle-text"><strong>Cost-Effective</strong> – Entire stack runs on free/low-cost infrastructure</span>
+                    </div>
+                    <div class="principle-item">
+                        <span class="principle-icon">🔓</span>
+                        <span class="principle-text"><strong>Open Source</strong> – No vendor lock-in, full transparency</span>
+                    </div>
+                    <div class="principle-item">
+                        <span class="principle-icon">🚀</span>
+                        <span class="principle-text"><strong>Production-Ready</strong> – Components can scale to production deployment</span>
+                    </div>
+                    <div class="principle-item">
+                        <span class="principle-icon">🔄</span>
+                        <span class="principle-text"><strong>Iterative</strong> – Easy to update knowledge base and retrain adapters</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Considerations Section -->
+    <section id="considerations">
+        <div class="section-header fade-in">
+            <div class="section-label">Transparency</div>
+            <h2>Assumptions & Limitations</h2>
+            <p class="section-desc">Important factors to consider for successful implementation.</p>
+        </div>
+
+        <div class="considerations-grid">
+            <div class="consideration-section assumption fade-in">
+                <h3>
+                    <span style="color: var(--accent);">✓</span>
+                    Key Assumptions
+                </h3>
+                <ul class="consideration-list">
+                    <li>
+                        <div class="consideration-icon">📊</div>
+                        <div class="consideration-text">
+                            <strong>Quality Dataset Available</strong>
+                            <span>We can synthesize or collect ~1000 high-quality Q&A pairs from existing support tickets and documentation.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="consideration-icon">💻</div>
+                        <div class="consideration-text">
+                            <strong>Minimal Compute Requirements</strong>
+                            <span>LoRA fine-tuning can be done on Google Colab (free T4 GPU) or equivalent low-cost infrastructure.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="consideration-icon">🔄</div>
+                        <div class="consideration-text">
+                            <strong>Iterative Improvement</strong>
+                            <span>The model can be continuously improved with user feedback and new FAQ entries.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="consideration-icon">👥</div>
+                        <div class="consideration-text">
+                            <strong>Human Oversight</strong>
+                            <span>Support staff will review and validate AI responses before they reach production use.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="consideration-section limitation fade-in">
+                <h3>
+                    <span style="color: var(--warning);">⚠</span>
+                    Known Limitations
+                </h3>
+                <ul class="consideration-list">
+                    <li>
+                        <div class="consideration-icon">🧠</div>
+                        <div class="consideration-text">
+                            <strong>Model Size Constraints</strong>
+                            <span>DistilGPT-2 (82M params) may struggle with highly complex, multi-step troubleshooting scenarios.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="consideration-icon">📝</div>
+                        <div class="consideration-text">
+                            <strong>Training Data Dependency</strong>
+                            <span>Response quality directly depends on the quality and coverage of the FAQ dataset.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="consideration-icon">🆕</div>
+                        <div class="consideration-text">
+                            <strong>Novel Issues</strong>
+                            <span>The model cannot handle completely new error types not present in training data without RAG fallback.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="consideration-icon">🔒</div>
+                        <div class="consideration-text">
+                            <strong>No Real-time Data Access</strong>
+                            <span>The model cannot query live systems; it provides guidance based on static knowledge.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Next Steps Section -->
+    <section id="next-steps">
+        <div class="section-header fade-in">
+            <div class="section-label">Roadmap</div>
+            <h2>Implementation Plan</h2>
+            <p class="section-desc">Phased approach to deliver value quickly while building toward full capability.</p>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item fade-in">
+                <div class="timeline-marker">1</div>
+                <div class="timeline-content">
+                    <h4>
+                        Dataset Creation & Validation
+                        <span class="timeline-duration">Week 1-2</span>
+                    </h4>
+                    <p>Compile FAQ corpus from support tickets, documentation, and SME interviews. Clean, format, and validate ~1000 Q&A pairs in JSONL format.</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-marker">2</div>
+                <div class="timeline-content">
+                    <h4>
+                        Model Fine-Tuning
+                        <span class="timeline-duration">Week 2-3</span>
+                    </h4>
+                    <p>Set up LoRA training pipeline on Colab. Fine-tune DistilGPT-2 with early stopping. Generate model checkpoints and validate loss curves.</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-marker">3</div>
+                <div class="timeline-content">
+                    <h4>
+                        RAG Pipeline Integration
+                        <span class="timeline-duration">Week 3</span>
+                    </h4>
+                    <p>Build vector index with ChromaDB. Implement retrieval pipeline with SentenceTransformers. Connect RAG to fine-tuned model.</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-marker">4</div>
+                <div class="timeline-content">
+                    <h4>
+                        Evaluation & Testing
+                        <span class="timeline-duration">Week 4</span>
+                    </h4>
+                    <p>Run automated metrics (BLEU, ROUGE, cosine similarity). Conduct manual evaluation on 50+ test queries. Compare base vs fine-tuned performance.</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-marker">5</div>
+                <div class="timeline-content">
+                    <h4>
+                        Demo & Documentation
+                        <span class="timeline-duration">Week 4-5</span>
+                    </h4>
+                    <p>Build Gradio interface for stakeholder demos. Create comprehensive README with training details, results, and usage instructions.</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-marker">6</div>
+                <div class="timeline-content">
+                    <h4>
+                        Pilot Deployment
+                        <span class="timeline-duration">Week 6+</span>
+                    </h4>
+                    <p>Deploy to internal support team for beta testing. Collect feedback, iterate on model. Plan production integration with existing support systems.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo">
+        <div class="section-header fade-in">
+            <div class="section-label">Preview</div>
+            <h2>Expected Output Quality</h2>
+            <p class="section-desc">Example of domain-aware responses from the fine-tuned model.</p>
+        </div>
+
+        <div class="demo-container fade-in">
+            <div class="demo-header">
+                <div class="demo-dot red"></div>
+                <div class="demo-dot yellow"></div>
+                <div class="demo-dot green"></div>
+                <span class="demo-title">erp_connect_cognition --query</span>
+            </div>
+            <div class="demo-content">
+                <div class="demo-input">
+                    <div class="demo-label">User Query 1</div>
+                    <div class="demo-box">"Error Server responded with HTTP 403?"</div>
+                </div>
+                <div class="demo-output">
+                    <div class="demo-label">AI Response</div>
+                    <div class="demo-box">
+HTTP 403 (Forbidden) means the server understood the request but refuses to authorize it. In simple terms, you reached the server successfully but you don't have permission to access that resource.
+
+<strong style="color: var(--accent);">Typical reasons in ERP-Connect integration:</strong>
+• Missing or invalid API Gateway authorization token
+• User role restrictions in SAP (check PFCG assignments)
+• IP allowlist/firewall rules blocking the request
+• Resource access policies in ECS task role
+
+<strong style="color: var(--accent);">Key difference from 401:</strong>
+401 means "not authenticated" (login required), while 403 means "authenticated but not allowed."
+
+<strong style="color: var(--warning);">One-liner:</strong> "I know who you are, but you can't access this."
+
+<strong style="color: var(--success);">Next steps:</strong> Check API Gateway authorizer logs, verify IAM roles, and confirm SAP user permissions.
+                    </div>
+                </div>
+
+                <div style="height: 2rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem;"></div>
+
+                <div class="demo-input">
+                    <div class="demo-label">User Query 2</div>
+                    <div class="demo-box">"BAPI_GOODSMVT_CREATE returned error: Material document not posted"</div>
+                </div>
+                <div class="demo-output">
+                    <div class="demo-label">AI Response</div>
+                    <div class="demo-box">
+This error occurs when SAP's <strong style="color: var(--accent);">BAPI_GOODSMVT_CREATE</strong> fails to post a goods movement document. The BAPI performs validation checks before committing the material document to the database.
+
+<strong style="color: var(--accent);">Common root causes:</strong>
+• Missing or invalid Movement Type (BWART) in the GM_CODE parameter
+• Material master not extended to the target plant/storage location
+• Insufficient stock for goods issue (Movement Type 261/262)
+• Missing batch determination for batch-managed materials
+• Posting period not open in MM Period (MMPV transaction)
+
+<strong style="color: var(--accent);">Debugging steps:</strong>
+1. Check the RETURN table structure for detailed error messages (MESSAGE_V1 to MESSAGE_V4)
+2. Verify GOODSMVT_HEADER fields: DOC_DATE, PSTNG_DATE, PR_UNAME
+3. Validate GOODSMVT_ITEM entries: MATERIAL, PLANT, STGE_LOC, MOVE_TYPE, ENTRY_QNT
+
+<strong style="color: var(--success);">Resolution:</strong> Use transaction SE37 to test BAPI_GOODSMVT_CREATE with your payload. Review RETURN messages and correct the data accordingly. Ensure BAPI_TRANSACTION_COMMIT is called after successful execution.
+                    </div>
+                </div>
+
+                <div style="height: 2rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem;"></div>
+
+                <div class="demo-input">
+                    <div class="demo-label">User Query 3</div>
+                    <div class="demo-box">"Getting Error as Interface Mapping Missing for Account AMEX122 for Business Unit: AMEX001, please add required interface mapping and reprocess the transaction from source system or from message monitor."</div>
+                </div>
+                <div class="demo-output">
+                    <div class="demo-label">AI Response</div>
+                    <div class="demo-box">
+This is a classic <strong style="color: var(--accent);">Data Setup problem</strong> related to GL Account mapping configuration.
+
+<strong style="color: var(--accent);">Root Cause:</strong>
+The middleware cannot find a corresponding SAP GL Account mapping for the source account "AMEX122" under Business Unit "AMEX001". This mapping is essential to let the middleware know how a GL Account is mapped from CTRM to SAP.
+
+<strong style="color: var(--accent);">Resolution Steps:</strong>
+1. Login to the <strong style="color: var(--warning);">ERP-Connect Web UI</strong>
+2. Navigate to the <strong style="color: var(--warning);">Interface Mapping</strong> widget
+3. You will find existing mappings already defined there
+4. Copy an existing record for GLAccount as a template
+5. Create a new mapping entry:
+   • Source Account: AMEX122
+   • Business Unit: AMEX001
+   • Target SAP GL Account: (e.g., 1234545 – confirm with Finance team)
+6. Save the mapping configuration
+
+<strong style="color: var(--success);">Final Step:</strong> Once the mapping is saved, reprocess the failed transaction from the <strong style="color: var(--warning);">Message Monitor</strong>. The transaction should now process successfully with the correct GL Account mapping in place.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta">
+        <h2 class="fade-in">Ready to Transform Support?</h2>
+        <p class="fade-in">ERP Connect CognitION can reduce response times by 60% and enable 24/7 automated first-line support for enterprise integrations.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-text">© 2026 ERP-Connect Team | ERP Connect CognitION – AI Support for Enterprise Integrations</div>
+        <div class="footer-links">
+            <a href="#">Technical Docs</a>
+            <a href="#">Contact Team</a>
+            <a href="#">Resources</a>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(15, 23, 42, 0.95)';
+            } else {
+                nav.style.background = 'rgba(15, 23, 42, 0.8)';
+            }
+        });
+    </script>
+</body>
+</html>

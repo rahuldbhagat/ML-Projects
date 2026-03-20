@@ -1,0 +1,38 @@
+knowledge_base:
+  input_dir: "data/knowledge_base"
+  file_extensions: [".md", ".txt", ".json"]
+  recursive: true
+  exclude_patterns: ["*_backup*", "*.draft.*"]
+
+chunking:
+  max_tokens: 512
+  min_tokens: 50
+  overlap_tokens: 128
+  strategy: "semantic"
+  preserve:
+    - headers
+    - code_blocks
+    - lists
+
+embeddings:
+  model: "sentence-transformers/all-MiniLM-L6-v2"
+  device: "cpu"
+  batch_size: 32
+  normalize: true
+  dimension: 384
+
+index:
+  type: "IVFFlat"
+  nlist: 10
+  nprobe: 3
+  metric: "L2"
+
+retrieval:
+  initial_k: 10
+  final_k: 5
+  similarity_threshold: 0.7
+  
+output:
+  index_path: "models/knowledge_base_v2.index"
+  docs_path: "models/documents_v2.pkl"
+  stats_path: "models/rag_stats_v2.json"

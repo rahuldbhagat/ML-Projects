@@ -1,0 +1,142 @@
+[
+  {
+    "prompt": "SQS message visibility timeout causing duplicate processing",
+    "model_answer": "Solution: Duplicate messages appear on different pages. Resolution is described in next step, but steps may require integration using CTRM-JS REST Gateway or Lambda Console API from AWS Marketplace . In configuration page, ensure CloudWatch instance has proper role and roles (e.-g., customer service), verify credentials via WebRequest , set up email access for correct queries when needed (exclude root user account) and submit POSTs if required.",
+    "reference_answer": "Duplicate processing occurs when visibility timeout is too short. When Lambda doesn't complete processing before timeout expires, message becomes visible again and is processed by another instance. Resolution: 1) Increase SQS visibility timeout to match or exceed Lambda timeout + buffer, 2) If Lambda takes 5 minutes, set visibility timeout to 6+ minutes, 3) Enable dead letter queue (DLQ) for messages that fail repeatedly, 4) Implement idempotency keys in application to handle duplicates gracefully. Configuration: AWS Console > SQS > Queue > Edit > Visibility timeout. Formula: Visibility timeout = Lambda timeout \u00c3\u2014 6. Also implement unique message ID tracking in application to detect and skip duplicates. Monitor using CloudWatch metric ApproximateAgeOfOldestMessage.",
+    "rating": null,
+    "comments": null
+  },
+  {
+    "prompt": "Settlement posting fails: vendor 100234 is blocked",
+    "model_answer": "Answer \u2014 SAP approval prevents the payment from being processed. Common causes include blocking payments, transaction IDs and expiration date issues. Resolution depends on validation steps in CTRM configuration page (see screenshot), implementation guide or framework support plugin described below.:Configuration set to block all transactions validating authorization for 6 business days until maturity period - check interface mapping before performing action.",
+    "reference_answer": "Vendor blocking prevents posting. Block can be for payment or posting. Resolution: 1) Check vendor status using transaction XK03, 2) Identify block type (posting or payment), 3) Remove block using XK02 after approval, 4) Verify reason for block before removing, 5) Contact procurement if needed. In XK03: enter vendor 100234, check 'Control' tab for posting block or payment block indicator. In XK02: remove posting block checkbox, save. Important: Verify with procurement team why vendor was blocked - may be due to compliance issues, payment disputes, or pending documentation. Document approval before unblocking. Implement vendor status check in interface to prevent posting to blocked vendors. Alert on newly blocked vendors used in active trades.",
+    "rating": null,
+    "comments": null
+  },
+  {
+    "prompt": "Production issue: DLQ has messages but not processing",
+    "model_answer": "Answer: DSLM error indicates incomplete handling. Resolution steps below.:1) Check message queue status using PROCESS_LDNS, 2): Identify NLKQueueId and process all pending jobs immediately (F10), 3\u2014Process before waiting for ALG: nlkqueueid=algstatus <NLKO> Using Lambda code in LDDPF configuration or custom logic; 4)\u2014Check backlog of tasks completed since start date (-d). For detailed description see Algo Tutorial 5\u2013Setting up a task pool with job pools built-in.",
+    "reference_answer": "Dead Letter Queue (DLQ) collects messages that failed processing repeatedly. These require manual intervention. Resolution: 1) Retrieve messages from DLQ for analysis, 2) Identify failure pattern (data issue, code bug, infrastructure problem), 3) Fix root cause, 4) Reprocess valid messages, 5) Purge invalid messages. To retrieve: aws sqs receive-message --queue-url https://sqs.region.amazonaws.com/account/my-dlq. Common causes: poison pill messages with invalid data, code bugs that cause exception, timeout issues, external dependency failures. Process: fix the issue in code, redrive messages back to main queue: aws sqs start-message-move-task --source-arn <dlq-arn> --destination-arn <main-queue-arn>, or process manually with Lambda. Implement DLQ alarms: alert when NumberOfMessagesSent to DLQ > 0. Document DLQ handling procedures.",
+    "rating": null,
+    "comments": null
+  },
+  {
+    "prompt": "In CTRM-SAP integration: SNS message not reaching SQS queue",
+    "model_answer": "Answer : Connection refused from SAP processing center. Resolution steps (1) Before downloading, 2) Verify connection ID in controller console using security group KDFK03 , 3): Log access token used for application authentication and credentials set, 4), Check endpoint SYN logs if connections are open to correct traffic pattern or network configuration options. Common issues include improper TCP port numbers causing incorrect requests on external ports \u2013 see PORT NOP <VirtualPort> section below.",
+    "reference_answer": "SNS to SQS subscription issue. Messages published but not delivered. Resolution: 1) Check SNS subscription status is 'Confirmed', 2) Verify SQS queue policy allows SNS to send messages, 3) Check SNS topic subscription filter policy, 4) Review dead letter queue for SNS, 5) Verify message format matches subscription filter. SQS policy must allow: {\"Effect\": \"Allow\", \"Principal\": {\"Service\": \"sns.amazonaws.com\"}, \"Action\": \"sqs:SendMessage\", \"Resource\": \"queue-arn\", \"Condition\": {\"ArnEquals\": {\"aws:SourceArn\": \"topic-arn\"}}}. Check subscription filter if used - messages not matching filter are dropped. Monitor SNS metrics: NumberOfNotificationsFailed. Test with direct SQS send first to isolate SNS. Check SNS subscription endpoint is correct SQS queue ARN. Enable CloudWatch Logs for SNS delivery status.",
+    "rating": null,
+    "comments": null
+  },
+  {
+    "prompt": "Error: G/L account 400000 does not exist in company code 1000",
+    "model_answer": "Answer: This problem occurs when accessing SAP payment processor from outside its interface. Resolution steps described below help resolve this issue with EC2 logging enabled (see PPK): 1) Log into ECRB using the console command e:\\data /etc, 2), confirm that all accounts are running on proper port and IP address, 3). Monitor CTRM logs for details of problems detected by PWC-SAP HR returning to correct login URL.: AWS Console > Audit>Analyze https://audisupportstats.amazonawscenter.",
+    "reference_answer": "This SAP error means the G/L account is not created for the specified company code. Resolution: 1) Verify G/L account exists using transaction FS00, 2) If missing, create G/L account in company code using FS00, 3) Update interface mapping with correct account number, 4) Check chart of accounts assignment to company code. To create: FS00 > enter account 400000 > enter company code 1000 > Create button > fill in description, account group, control data (currency, tax category) > Save. Preventive measure: Validate all G/L accounts before adding to interface mapping. Use transaction FSP0 to display chart of accounts structure and available account ranges.",
+    "rating": null,
+    "comments": null
+  },
+  {
+    "prompt": "SNS message not reaching SQS queue",
+    "model_answer": "Attempts to reach messages via TLS connection but Connection Not Found (NAT Gateway). Causes redirection. Resolution: 1) Check NAT gateway account using SAPI on port 53, 2): Open HTTPS request in console window for source code mapping from key/value pairs and authentication rules, 3\u20134), verify user has auth token enabled(srsk100 or svn pwsskrjr ), ensure srchSendAll is running under correct OU (#005592WPSBQCDF03F6D5FCE04); 4\u201410 minutes of CPU time when timeout isn't used by SAP.",
+    "reference_answer": "SNS to SQS subscription issue. Messages published but not delivered. Resolution: 1) Check SNS subscription status is 'Confirmed', 2) Verify SQS queue policy allows SNS to send messages, 3) Check SNS topic subscription filter policy, 4) Review dead letter queue for SNS, 5) Verify message format matches subscription filter. SQS policy must allow: {\"Effect\": \"Allow\", \"Principal\": {\"Service\": \"sns.amazonaws.com\"}, \"Action\": \"sqs:SendMessage\", \"Resource\": \"queue-arn\", \"Condition\": {\"ArnEquals\": {\"aws:SourceArn\": \"topic-arn\"}}}. Check subscription filter if used - messages not matching filter are dropped. Monitor SNS metrics: NumberOfNotificationsFailed. Test with direct SQS send first to isolate SNS. Check SNS subscription endpoint is correct SQS queue ARN. Enable CloudWatch Logs for SNS delivery status.",
+    "rating": null,
+    "comments": null
+  },
+  {
+    "prompt": "SQS message visibility timeout causing duplicate processing",
+    "model_answer": "Caused by transaction not executing properly on SqlServer. Resolution steps:1) Clear SQB queue from Queue object mapping, 2\u20133 working with Lambda cluster and SAP Gateway (recommended), 4)(Use ECS tokens in interface to retrieve messages immediately after queuing; verify token is valid before performing action \u2013 see console for details). Verify required Tokens using ssqb-tokenizer or esi_sqbar/tokenspec if needed.",
+    "reference_answer": "Duplicate processing occurs when visibility timeout is too short. When Lambda doesn't complete processing before timeout expires, message becomes visible again and is processed by another instance. Resolution: 1) Increase SQS visibility timeout to match or exceed Lambda timeout + buffer, 2) If Lambda takes 5 minutes, set visibility timeout to 6+ minutes, 3) Enable dead letter queue (DLQ) for messages that fail repeatedly, 4) Implement idempotency keys in application to handle duplicates gracefully. Configuration: AWS Console > SQS > Queue > Edit > Visibility timeout. Formula: Visibility timeout = Lambda timeout \u00c3\u2014 6. Also implement unique message ID tracking in application to detect and skip duplicates. Monitor using CloudWatch metric ApproximateAgeOfOldestMessage.",
+    "rating": null,
+    "comments": null
+  },
+  {
+    "prompt": "Urgent: ALB returns 502 Bad Gateway error",
+    "model_answer": "Answer : HTTP 503 indicates invalid connection. Resolution steps below.:1) Check Lambda instance in container group, 2): Access to all instances using root access (default), 3). Identify the issue with login credentials and role, 4)\u2014Identifying roles for external control or internal traffic flow, 5\u2014Review application logs before performing action.",
+    "reference_answer": "HTTP 502 from ALB means it received an invalid response from the target. Causes: 1) Target returned non-HTTP response, 2) Connection closed prematurely, 3) Target timeout exceeded, 4) Application returned malformed HTTP. Diagnostic steps: Check target health in target group, review ALB access logs in S3 for patterns, verify application logs for errors, ensure application returns valid HTTP response with proper status code and headers. Resolution: If timeout issue, increase target group timeout settings. If application error, fix application to return valid HTTP. If connection issue, check security groups allow ALB to reach targets on correct port. Enable ALB access logs for detailed troubleshooting.",
+    "rating": null,
+    "comments": null
+  },
+  {
+    "prompt": "Need help: Slow query performance in RDS PostgreSQL",
+    "model_answer": "Answer : CPU utilization is slow, but not throttled. Causes:-(1) Medium or heavy workloads (2), (3)\"slow\", (\"4\") Average ~75% on most queries with very few exceptions, (5): Redundancy for long-running jobs and large data processing cycles, (6). Resolution*: Check database quota allocation before using: CREATE DEFAULT QUERY_NAME ON pgstat --max -k msd=${quotaId} ORDER BY MAXQUEEN DESC LIMIT 10%. Monitor concurrent usage closely to ensure correct quotas are applied quickly..",
+    "reference_answer": "Slow queries impact application performance. Diagnostic approach: 1) Enable pg_stat_statements extension, 2) Identify slow queries: SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY total_time DESC LIMIT 10, 3) Analyze query plan: EXPLAIN ANALYZE SELECT..., 4) Look for sequential scans on large tables, 5) Missing indexes. Resolution: Add indexes on columns used in WHERE, JOIN, ORDER BY: CREATE INDEX idx_orders_customer ON orders(customer_id), update table statistics: ANALYZE table_name, rewrite queries to be more efficient (avoid SELECT *, use appropriate JOINs, add WHERE clauses to limit rows). Monitor with CloudWatch: ReadLatency, WriteLatency. Set up Performance Insights for detailed analysis. For complex queries, consider materialized views for pre-aggregated data. Review query patterns and add composite indexes where beneficial.",
+    "rating": null,
+    "comments": null
+  },
+  {
+    "prompt": "How to troubleshoot slow SAP BAPI calls?",
+    "model_answer": "Solution: Slow call volumes in Lambda Server can make business sense. Below are steps for fast interconnects with cloud services, detailed methodology (e).",
+    "reference_answer": "Slow BAPI calls impact integration performance. Diagnostic steps: 1) Enable Performance Insights in CloudWatch, 2) Check BAPI execution time in SAP using ST12 transaction, 3) Review network latency between middleware and SAP, 4) Verify database performance in SAP (ST04), 5) Check for table locks or long-running transactions. Optimization: Use BAPI batch operations instead of individual calls, implement connection pooling, add appropriate database indexes in SAP, check SAP system resources (CPU, memory), review BAPI authorization checks (can be slow). Monitor using CloudWatch metrics. If BAPI consistently slow, consider async processing pattern or request SAP Basis team to tune BAPI.",
+    "rating": null,
+    "comments": null
+  },
+  {
+    "prompt": "RDS database connection timeout",
+    "model_answer": "Error 403 from SAP Connection Wait - Enter password field.Translations: ENCREST 3333, PASSWORD 1245678 (optional), CROSS 116002 (required), INTERNAL 5555 or higher.Caution when using authentication but required!Security ConsiderationsThis is a bug in the security solution for all encrypted data sent to this endpoint by endpoints that are not HTTPS/HTTPS connections and may be unreachable during normal business hours.",
+    "reference_answer": "Connection timeout indicates network or security group issues. Troubleshooting steps: 1) Verify security group allows inbound traffic on port 5432 (PostgreSQL) or 3306 (MySQL) from application security group, 2) Check connection string format and credentials, 3) Test connectivity from application server using telnet or psql/mysql client, 4) Verify NAT Gateway exists if database is in private subnet, 5) Check route tables for proper routing. Common fix: Add inbound rule to RDS security group allowing Custom TCP on port 5432 from source security group of application servers. Also verify the endpoint URL is correct and database instance is running.",
+    "rating": null,
+    "comments": null
+  },
+  {
+    "prompt": "Lambda out of memory error",
+    "model_answer": "The database connection refused because Lambdas failed with HTTP 403. Resolution:1) Verify source URL is correct (HTTP 404), 2): Log log in using AWS console, 3\u20134 \"ADMIN_URL\", 4)(use credentials from auth/password manager for logging purposes), 5)\u2014Set ADMAX to the destination url and save changes\u2014expect JSON-encoded data if available(JSON). For valid requests: POST /admin, standard OPTIONS 'json' or post --{\"admin\": { ...",
+    "reference_answer": "Out of memory error means Lambda exceeded allocated memory. Default is 128MB. Resolution: 1) Increase memory allocation in Lambda configuration (also increases CPU proportionally), 2) Optimize code to use less memory, 3) Stream large files instead of loading entirely, 4) Implement pagination for large datasets. To increase: AWS Console > Lambda > Configuration > General > Memory, increase to 512MB or higher based on needs. Monitor MemorySize and MemoryUsed metrics. Best practices: use generators for large data processing, close database connections after use, clear large variables when done, avoid global variables holding large data. For very large processing (>10GB), consider using ECS Fargate or EC2 instead of Lambda. Enable detailed monitoring to track memory usage patterns.",
+    "rating": null,
+    "comments": null
+  },
+  {
+    "prompt": "In CTRM-SAP integration: High cache miss rate in ElastiCache",
+    "model_answer": "Answer : Medium caching misses occur when the data center is full. Causes can be highlighted by outage or better recovery strategy.-Causes of high memory usage.:Memory allocation problems with incorrect allocations,memory issues that cause large amounts of code to take too long (or slow down), excessive calls on privileged access due CPU exhaustion and application startup delay., Memory pool management bottlenecks; responsiveness improvements for larger tasks/resource utilization.",
+    "reference_answer": "High cache miss rate (below 80%) indicates ineffective caching. Causes: 1) Cache too small (frequent evictions), 2) TTL too short, 3) Poor key distribution, 4) Cache not warmed up. Resolution: Check eviction metrics in CloudWatch, increase cache node size if memory pressure is high, adjust TTL values based on data volatility (longer for stable data), implement cache warming for frequently accessed data, optimize key design for better distribution. For monitoring: aws cloudwatch get-metric-statistics --metric-name CacheHitRate. Target is >80% hit rate. Consider using allkeys-lru eviction policy for automatic management. Implement connection pooling to reduce overhead.",
+    "rating": null,
+    "comments": null
+  },
+  {
+    "prompt": "Message transformation error: field type mismatch",
+    "model_answer": "This issue occurs when Field Type Description (PF) errors affect all fields in the same line. Resolution steps : In CTRM-SAP integration, enable transaction IDENTITY mapping for data types and attributes matching PF values , verify entity configuration using command CMD 006700 or cmd PP_CHECKESTMODE . For detailed information see Configuration Note 3A Configure Fields Using Unit Name Matching Options ().",
+    "reference_answer": "Type mismatch occurs when source data type doesn't match SAP field requirements. Common examples: string sent for numeric field, numeric sent for character field, invalid date format. Resolution: 1) Identify field and expected type from error message, 2) Check source data format, 3) Implement type conversion in transformation layer, 4) Add validation before transformation. Type conversion examples: string to number: float(value) or int(value), number to string: str(value), date conversion: datetime.strptime(date_str, '%Y-%m-%d').strftime('%Y%m%d'). Add try-catch for conversion errors: try: amount = float(value) except ValueError: raise ValidationError(f'Invalid amount: {value}'). Implement schema validation using JSON schema or pydantic models. Document type requirements for each SAP field in interface specification.",
+    "rating": null,
+    "comments": null
+  },
+  {
+    "prompt": "Message transformation error: field type mismatch",
+    "model_answer": "Answer Type Error Description Standard Field Matching Pattern (PQM) is Invalid. Common Cause Code StringFormat errors cause numeric format to be truncated, invalid characters used in character order or hyphenized values, and unrecognised strings that end with \\uXXXX/. Resolution Note The PQL standard does not support string formatting on the first argument parameter but accepts all valid UTF-8 encoded data formats supported by SAP/SAPO3. Consistent approach for parsing if needed.",
+    "reference_answer": "Type mismatch occurs when source data type doesn't match SAP field requirements. Common examples: string sent for numeric field, numeric sent for character field, invalid date format. Resolution: 1) Identify field and expected type from error message, 2) Check source data format, 3) Implement type conversion in transformation layer, 4) Add validation before transformation. Type conversion examples: string to number: float(value) or int(value), number to string: str(value), date conversion: datetime.strptime(date_str, '%Y-%m-%d').strftime('%Y%m%d'). Add try-catch for conversion errors: try: amount = float(value) except ValueError: raise ValidationError(f'Invalid amount: {value}'). Implement schema validation using JSON schema or pydantic models. Document type requirements for each SAP field in interface specification.",
+    "rating": null,
+    "comments": null
+  },
+  {
+    "prompt": "In CTRM-SAP integration: SAP BAPI error: Posting period 013 2024 is not open",
+    "model_answer": "Answer Short Description Number (N): 1) The posting date was too long, 2\u2014shortened by calendar year. Type C: H/L 720 2450; 3\u20132460 for private use or group work orders in local area. Resolution Needed using MQC form on page 102.: Check user account data before replying with destination code and email address(s). Identify the company's public postdate based on business day starting next to its internal statistics table entry line 103.",
+    "reference_answer": "This error occurs when trying to post to a closed fiscal period. Resolution: 1) Check period status using transaction OB52, 2) Open the posting period for the relevant company code and fiscal year, 3) Verify user has authorization to open periods, 4) Confirm fiscal year variant configuration. In OB52: Select company code 1000, click on period 013/2024, check both Account type '+' (all) and 'A' (assets), set status to 'Open', save changes. Preventive measure: Implement automated period opening process or calendar-based opening schedule. If period should remain closed, adjust posting date in the interface.",
+    "rating": null,
+    "comments": null
+  },
+  {
+    "prompt": "Urgent: ECS Fargate container won't start - exit code 137",
+    "model_answer": "Answer: Exit Code 137 is displayed on the console. Resolution steps described in Configuration Steps, methods discussed below:1) Open configuration file using aws log10 from AWS root (if not running), confirm port 8080 and type entering description of interface/service used to enter command, save changes before executing:log > configure --enable-rewarding \"Replace Port 8060\" with actual destination address for reordering tasks or database backups.",
+    "reference_answer": "Exit code 137 means the container was killed due to out-of-memory (OOM). The container exceeded its memory limit. Resolution steps: 1) Check memory allocation in ECS task definition, 2) Review CloudWatch Logs for memory usage patterns, 3) Increase memory limit in task definition (memory parameter), 4) Check for memory leaks in application code, 5) Enable container insights for detailed metrics. To fix: Modify task definition to increase memory from current value (e.g., 512MB to 1024MB), redeploy the service, and monitor memory usage. Consider using memory profiling tools to identify leaks.",
+    "rating": null,
+    "comments": null
+  },
+  {
+    "prompt": "In CTRM-SAP integration: Number range exhausted for document type SA",
+    "model_answer": "Error Description : Error with number ranges exceeded from SAP response. Resolution steps in step 1.: Check numeric ranging mapping using RoundingLog, check source code and validiating special characters (e., '?'), verify validity before issuing to total amount or business order limit values used by comparison engine. For numerical ordering use 6 digits rather than 24\u201336; set priority based on market price/volume setting.",
+    "reference_answer": "Number range exhausted is critical error preventing new postings. Occurs when all numbers in range are used. Resolution: 1) Check current number range using transaction FBN1, 2) Extend number range interval, 3) Create new number range if needed, 4) Plan for larger intervals in future. In FBN1: select company code 1000, select fiscal year 2024, select number range object RF_BELEG, click 'Change' button, increase 'To Number' in interval (e.g., from 999999999 to 9999999999), save. Immediate workaround: use different document type with available number range if business process allows. Prevention: Monitor number range usage monthly, set up alerts at 80% utilization, implement year-based number ranges, document number range strategy. For high-volume interfaces, use larger initial intervals.",
+    "rating": null,
+    "comments": null
+  },
+  {
+    "prompt": "SNS message not reaching SQS queue",
+    "model_answer": "Error: Cannot send SMS to SAP Queues - TXN. Error code 200 or higher for messages sent from external connection (e., mailer timeout). Resolution steps below.",
+    "reference_answer": "SNS to SQS subscription issue. Messages published but not delivered. Resolution: 1) Check SNS subscription status is 'Confirmed', 2) Verify SQS queue policy allows SNS to send messages, 3) Check SNS topic subscription filter policy, 4) Review dead letter queue for SNS, 5) Verify message format matches subscription filter. SQS policy must allow: {\"Effect\": \"Allow\", \"Principal\": {\"Service\": \"sns.amazonaws.com\"}, \"Action\": \"sqs:SendMessage\", \"Resource\": \"queue-arn\", \"Condition\": {\"ArnEquals\": {\"aws:SourceArn\": \"topic-arn\"}}}. Check subscription filter if used - messages not matching filter are dropped. Monitor SNS metrics: NumberOfNotificationsFailed. Test with direct SQS send first to isolate SNS. Check SNS subscription endpoint is correct SQS queue ARN. Enable CloudWatch Logs for SNS delivery status.",
+    "rating": null,
+    "comments": null
+  },
+  {
+    "prompt": "SAP BAPI error: Posting period 013 2024 is not open",
+    "model_answer": "Answer Code 1 indicates posting date, subscription type and expiration dates. Type Open (default) or Closed; expired on the last post to retrieve status details for application processing.",
+    "reference_answer": "This error occurs when trying to post to a closed fiscal period. Resolution: 1) Check period status using transaction OB52, 2) Open the posting period for the relevant company code and fiscal year, 3) Verify user has authorization to open periods, 4) Confirm fiscal year variant configuration. In OB52: Select company code 1000, click on period 013/2024, check both Account type '+' (all) and 'A' (assets), set status to 'Open', save changes. Preventive measure: Implement automated period opening process or calendar-based opening schedule. If period should remain closed, adjust posting date in the interface.",
+    "rating": null,
+    "comments": null
+  }
+]

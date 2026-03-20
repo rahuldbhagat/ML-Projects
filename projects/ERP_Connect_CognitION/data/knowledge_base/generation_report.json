@@ -1,0 +1,27 @@
+{
+  "total_documents": 25,
+  "total_words": 8364,
+  "by_category": {
+    "ARCHITECTURE": {
+      "count": 5,
+      "words": 1455
+    },
+    "HTTP_ERRORS": {
+      "count": 2,
+      "words": 1510
+    },
+    "INTEGRATION": {
+      "count": 7,
+      "words": 2245
+    },
+    "SAP": {
+      "count": 8,
+      "words": 2377
+    },
+    "PERFORMANCE": {
+      "count": 3,
+      "words": 777
+    }
+  },
+  "generation_time": "0:00:00.016539"
+}

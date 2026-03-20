@@ -1,0 +1,34 @@
+input:
+  seed_file: "data/seed_qa_pairs.json"
+
+output:
+  processed_dir: "data/processed"
+  file_format: "jsonl"
+  encoding: "utf-8"
+  include_metadata: true
+
+generation:
+  target_samples: 1500
+  variations_per_seed: 50
+  augmentation:
+    replace_codes: true
+    add_context: true
+    vary_urgency: true
+    paraphrase: true
+
+split:
+  train_ratio: 0.8
+  val_ratio: 0.1
+  test_ratio: 0.1
+  stratify_by:
+    - category
+    - difficulty
+  random_seed: 42
+
+quality_checks:
+  min_prompt_length: 10
+  max_prompt_length: 500
+  min_response_length: 50
+  max_response_length: 2000
+  no_duplicates: true
+  valid_json: true

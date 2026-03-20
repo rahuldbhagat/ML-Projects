@@ -1,0 +1,13 @@
+{
+  "total_documents": 26,
+  "total_chunks": 19,
+  "by_category": {
+    "ARCHITECTURE": 5,
+    "HTTP_ERRORS": 2,
+    "INTEGRATION": 7,
+    "PERFORMANCE": 3,
+    "SAP": 8,
+    "GENERAL": 1
+  },
+  "build_time": "0:00:00.269805"
+}

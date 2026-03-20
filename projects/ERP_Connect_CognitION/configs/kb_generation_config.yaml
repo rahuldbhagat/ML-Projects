@@ -1,0 +1,66 @@
+output:
+  base_dir: "data/knowledge_base"
+
+documents:
+  architecture:
+    count: 5
+    avg_words: 900
+    components:
+      - ECS_FARGATE
+      - RDS
+      - ALB
+      - API_GATEWAY
+      - MEMCACHE
+    
+  http_errors:
+    count: 2
+    avg_words: 1400
+    codes_4xx: [400, 401, 403, 404, 405, 408, 429]
+    codes_5xx: [500, 502, 503, 504]
+    
+  integration:
+    count: 7
+    avg_words: 750
+    topics:
+      - ctrm_sap_architecture
+      - trade_data_sync
+      - settlement_processing
+      - message_transformation
+      - sns_sqs_patterns
+      - lambda_processing
+      - async_processing
+    
+  sap:
+    count: 8
+    avg_words: 850
+    topics:
+      - bapi_errors_catalog
+      - interface_mapping_guide
+      - master_data_setup
+      - bapi_best_practices
+      - transaction_codes
+      - posting_logic
+      - company_code_config
+      - authorization_issues
+    
+  performance:
+    count: 3
+    avg_words: 850
+    topics:
+      - monitoring_guide
+      - optimization_checklist
+      - troubleshooting_slow_queries
+
+content_rules:
+  include_code_examples: true
+  include_scenarios: true
+  include_troubleshooting: true
+  realistic_examples: true
+  proper_terminology: true
+
+quality_targets:
+  total_documents: 25
+  total_words_min: 20000
+  total_words_max: 25000
+  words_per_doc_min: 600
+  words_per_doc_max: 1500

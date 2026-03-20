@@ -1,0 +1,136 @@
+{
+  "statistics": {
+    "ROUGE-1": {
+      "mean": 0.21273453604926043,
+      "std": 0.06731118626652881,
+      "min": 0.04580152671755725,
+      "max": 0.3463687150837989
+    },
+    "ROUGE-2": {
+      "mean": 0.016054870144240698,
+      "std": 0.01711291128379738,
+      "min": 0.0,
+      "max": 0.09356725146198831
+    },
+    "ROUGE-L": {
+      "mean": 0.11657879043188589,
+      "std": 0.034746553082229514,
+      "min": 0.043795620437956206,
+      "max": 0.2312138728323699
+    },
+    "BLEU": {
+      "mean": 0.004102349535731145,
+      "std": 0.005242699988440936,
+      "min": 0.0,
+      "max": 0.03853716576909541
+    },
+    "Cosine Similarity": {
+      "mean": 0.46778112212816875,
+      "std": 0.12831594526322182,
+      "min": 0.18109187483787537,
+      "max": 0.7783332467079163
+    }
+  },
+  "detailed_predictions": [
+    {
+      "prompt": "Production issue: Slow query performance in RDS PostgreSQL",
+      "reference": "Slow queries impact application performance. Diagnostic approach: 1) Enable pg_stat_statements extension, 2) Identify slow queries: SELECT query, calls, mean_time, total_time FROM pg_stat_statements ORDER BY total_time DESC LIMIT 10, 3) Analyze query plan: EXPLAIN ANALYZE SELECT..., 4) Look for sequential scans on large tables, 5) Missing indexes. Resolution: Add indexes on columns used in WHERE, JOIN, ORDER BY: CREATE INDEX idx_orders_customer ON orders(customer_id), update table statistics: ANALYZE table_name, rewrite queries to be more efficient (avoid SELECT *, use appropriate JOINs, add WHERE clauses to limit rows). Monitor with CloudWatch: ReadLatency, WriteLatency. Set up Performance Insights for detailed analysis. For complex queries, consider materialized views for pre-aggregated data. Review query patterns and add composite indexes where beneficial.",
+      "prediction": "Solution Description: Fast queries fail due to improper SQL syntax or memory usage. Common causes include insufficient indexes and processing time, security issues (memory leaks), database access errors that cause invalid data values not allowed by Oracle's standard configuration pattern/pattern matching patterns; cache infrequent requests for long-lived objects over small read loads."
+    },
+    {
+      "prompt": "Authorization missing for company code 1000",
+      "reference": "SAP authorization error indicates user lacks permission. Resolution: 1) Check missing authorizations using SU53 (must run immediately after error), 2) Identify authorization object causing issue (typically F_BKPF_BUK for company code), 3) Add company code to user's authorization profile, 4) Assign appropriate role using PFCG, 5) Test authorization after changes. In PFCG: display role, go to Authorizations tab, edit authorization object F_BKPF_BUK, add company code 1000 to allowed values, generate profile, assign role to user. For technical user: ensure integration user has authorizations for all company codes used in interface. Implement authorization check before posting: AUTHORITY-CHECK OBJECT 'F_BKPF_BUK' ID 'BUKRS' FIELD '1000'. Document required authorizations in interface specification.",
+      "prediction": "Solution: IdN000 is assigned to a person who completed but not yet issued an authorization. This error indicates failure due the SAP security group or network configuration issue, e). Resolution steps in Configuration > Security Group -> Authentication (Hardware \u2192 Authorization), 2). In Interface tab, enter Authority using Device ID 000 and click on 'Security Area'. Verify business integration allows user access allowing credentials from P2P controller/admin console."
+    },
+    {
+      "prompt": "Urgent: RDS database connection timeout",
+      "reference": "Connection timeout indicates network or security group issues. Troubleshooting steps: 1) Verify security group allows inbound traffic on port 5432 (PostgreSQL) or 3306 (MySQL) from application security group, 2) Check connection string format and credentials, 3) Test connectivity from application server using telnet or psql/mysql client, 4) Verify NAT Gateway exists if database is in private subnet, 5) Check route tables for proper routing. Common fix: Add inbound rule to RDS security group allowing Custom TCP on port 5432 from source security group of application servers. Also verify the endpoint URL is correct and database instance is running.",
+      "prediction": "Answer This issue affects SAP's ConnectionTimeout setting. Causes : 1) HTTP 503 for non-HIGH URIs (HTTP 200 OK), 2] Redirection failed, 3). Resolution depends on application configuration and security context in CloudWatch middleware driver, 4)[1]: Enable HTTPSTPSK authentication using P2P token from Application Console or http://192.*(port)-/account/.php with required permissions followed by aws get pcrealers , 5).[3][4][5](cpanner): $uri = 'https:\\ /usr\\/bin\\console']."
+    },
+    {
+      "prompt": "How to add interface mapping for Cost Center TRADE456?",
+      "reference": "This is a data setup problem in the Interface Mapping widget. To add Cost Center mapping: 1) Login to Web UI, 2) Navigate to Interface Mapping widget, 3) Select 'Cost Center' mapping type, 4) Click 'Add New Mapping', 5) Enter CTRM Cost Center: ENERGY999, 6) Enter SAP Cost Center: 4711ENERGY, 7) Select Business Unit: TRADE001, 8) Click 'Save'. Verify the mapping by testing with a sample trade. If the SAP cost center doesn't exist, create it first using transaction KS01.",
+      "prediction": "To perform cost center integration: 1) Verify CTRF export model using SAS SAPI, 2); In SAP Console: Enter BICS Model Description (cost-center ), enter transaction type ($price), save in cloud service provider or application server. Next create the trade format with $value representing all items that are exported from source code and saving into Cloud Service Provider Memory Pack."
+    },
+    {
+      "prompt": "Lambda out of memory error",
+      "reference": "Out of memory error means Lambda exceeded allocated memory. Default is 128MB. Resolution: 1) Increase memory allocation in Lambda configuration (also increases CPU proportionally), 2) Optimize code to use less memory, 3) Stream large files instead of loading entirely, 4) Implement pagination for large datasets. To increase: AWS Console > Lambda > Configuration > General > Memory, increase to 512MB or higher based on needs. Monitor MemorySize and MemoryUsed metrics. Best practices: use generators for large data processing, close database connections after use, clear large variables when done, avoid global variables holding large data. For very large processing (>10GB), consider using ECS Fargate or EC2 instead of Lambda. Enable detailed monitoring to track memory usage patterns.",
+      "prediction": "Answer: Memory allocation is too slow. Causes : 1) Too many allocations, 2): Use SML_ALLOW() instead for quick access to the large amount allocated (or overflows), 3\u20134 workaround with OCRs mapping in Lambdas configuration; 4\u20145 optimization steps if needed \u2014 6)\u2014 Adjust ResourceLimit before starting process or using batch migration tools when necessary."
+    },
+    {
+      "prompt": "SQS message visibility timeout causing duplicate processing",
+      "reference": "Duplicate processing occurs when visibility timeout is too short. When Lambda doesn't complete processing before timeout expires, message becomes visible again and is processed by another instance. Resolution: 1) Increase SQS visibility timeout to match or exceed Lambda timeout + buffer, 2) If Lambda takes 5 minutes, set visibility timeout to 6+ minutes, 3) Enable dead letter queue (DLQ) for messages that fail repeatedly, 4) Implement idempotency keys in application to handle duplicates gracefully. Configuration: AWS Console > SQS > Queue > Edit > Visibility timeout. Formula: Visibility timeout = Lambda timeout \u00c3\u2014 6. Also implement unique message ID tracking in application to detect and skip duplicates. Monitor using CloudWatch metric ApproximateAgeOfOldestMessage.",
+      "prediction": "Solution: Duplicate messages cause security issues in SQB. These include duplicates sent via mail, errors logged on system (e = not found), incorrect responses from RDS provider, missing payment method or out of document cache error. Resolution steps for automated control :Set audit logs using SOHO EXPLAIN -f command line and task list , check P2C invocations before sending to console ."
+    },
+    {
+      "prompt": "Authorization missing for company code 1000",
+      "reference": "SAP authorization error indicates user lacks permission. Resolution: 1) Check missing authorizations using SU53 (must run immediately after error), 2) Identify authorization object causing issue (typically F_BKPF_BUK for company code), 3) Add company code to user's authorization profile, 4) Assign appropriate role using PFCG, 5) Test authorization after changes. In PFCG: display role, go to Authorizations tab, edit authorization object F_BKPF_BUK, add company code 1000 to allowed values, generate profile, assign role to user. For technical user: ensure integration user has authorizations for all company codes used in interface. Implement authorization check before posting: AUTHORITY-CHECK OBJECT 'F_BKPF_BUK' ID 'BUKRS' FIELD '1000'. Document required authorizations in interface specification.",
+      "prediction": "Solution: SAP Error Description 840 refers to an invalid authorization. Resolution steps below.:1) Verify Authority assigned by vendor allows inbound traffic via HTTP, 2): Identify entity with authority mapping from security group (default is 'admin'), 3]: In-place database access using aws get_account , 4\u20135 validate credentials and validations before publishing."
+    },
+    {
+      "prompt": "High database CPU utilization in RDS",
+      "reference": "High CPU (>75%) indicates performance bottleneck. Causes: 1) Inefficient queries, 2) Missing indexes, 3) Too many connections, 4) Complex joins without optimization. Resolution: Enable Performance Insights in RDS console, identify expensive queries: SELECT query, calls, total_time FROM pg_stat_statements ORDER BY total_time DESC LIMIT 10, analyze query plans: EXPLAIN ANALYZE SELECT..., add appropriate indexes, optimize or rewrite slow queries, consider read replicas to offload read traffic, upgrade instance class if needed. For immediate relief: kill long-running queries: SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE state = 'active' AND query_start < now() - interval '10 minutes'. Review CloudWatch metrics CPUUtilization, DatabaseConnections, ReadLatency.",
+      "prediction": "Database Batch Error Description: Connection closed after 5 minutes due to capacity limitations. Resolution steps:#1) Check cluster administrator account uses per-file quota, 2\u20146 hours for maximum use on given subnets, 3)\u2014Set up VM pool size and availability settings (default 512MB), 4): Open VMs using Amazon SQS or SQL Server with auto access from external console, 10 lbs/sec reserved when running QA server software; verify they are free of network bottlenecks before attempting."
+    },
+    {
+      "prompt": "Need help: API Gateway CORS error in browser",
+      "reference": "CORS (Cross-Origin Resource Sharing) error occurs when browser blocks request from different origin. Symptoms: works in Postman but fails in browser, see CORS error in browser console. Resolution: 1) Enable CORS in API Gateway for the API resource, 2) Add CORS headers to Lambda response, 3) Handle OPTIONS preflight requests. Required headers: Access-Control-Allow-Origin (set to specific domain or *), Access-Control-Allow-Headers (Content-Type, Authorization, etc.), Access-Control-Allow-Methods (GET, POST, PUT, DELETE). In Lambda: return {'statusCode': 200, 'headers': {'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS'}, 'body': json.dumps(data)}. For OPTIONS requests, return 200 with CORS headers and empty body. Test from browser developer console.",
+      "prediction": "Answer : HTTP headers MAY return a 403 Forbidden response. Common causes include incomplete validation, security group blocking access and malformed content parsing (CVE-201715). Resolution steps described below.:To issue:(1) Verify credentials using CA KeyExist , 2): Add HTTPS OPTIONS to GET request mapping specifying https://api.example123 or http_httpstatus -check for Authority={keyexists} ."
+    },
+    {
+      "prompt": "ECS task health check failing",
+      "reference": "Health check failures cause ALB to mark targets as unhealthy and stop routing traffic. Common causes: 1) Wrong health check path configured, 2) Health endpoint returns non-200 status, 3) Timeout too short, 4) Application not fully started, 5) Security group blocking ALB access. Resolution: Verify health endpoint URL is correct (e.g., /health not /healthcheck), ensure endpoint returns 200 OK, increase health check timeout and interval if startup is slow, check security group allows ALB to reach task on correct port, review application logs for health check errors. Configure in task definition: healthCheck with command, interval (30s), timeout (5s), retries (3), startPeriod (60s for slow startup). Implement lightweight health check that validates critical dependencies.",
+      "prediction": "Solution: Health Check failed due to network connectivity issues (LOWLAN, GREEN LAN) or connection redirection error. Resolution steps:-Take advantage of ECS role in AWS console for troubleshooting:(1). Enable security group LBRKF on port 443 from login page and save changes.: In config -> area > profile> user name \"lbrkf\", add RTC_TLS service allowing logging & monitoring(2), verify state-of\u2011service SSL certificate is correct; ensure NAT Gateway has proper IP address mapping."
+    },
+    {
+      "prompt": "ECS task health check failing",
+      "reference": "Health check failures cause ALB to mark targets as unhealthy and stop routing traffic. Common causes: 1) Wrong health check path configured, 2) Health endpoint returns non-200 status, 3) Timeout too short, 4) Application not fully started, 5) Security group blocking ALB access. Resolution: Verify health endpoint URL is correct (e.g., /health not /healthcheck), ensure endpoint returns 200 OK, increase health check timeout and interval if startup is slow, check security group allows ALB to reach task on correct port, review application logs for health check errors. Configure in task definition: healthCheck with command, interval (30s), timeout (5s), retries (3), startPeriod (60s for slow startup). Implement lightweight health check that validates critical dependencies.",
+      "prediction": "Answer: Health Check Error (HQ) indicates failure causing network access denied. Resolution steps : 1) Identify security group using S3 bucket or OU, 2] Verify connectivity from AWS console for correct credentials, 3): Sign in to account with administrator password and select 'admin', 4\u20135 verify connection is allowed through NAT Gateway 6)\u2014Set Nmap ID if needed\u2014Check required authentication before requesting endpoint token change ENS01001 on controller 192."
+    },
+    {
+      "prompt": "ECS Fargate container won't start - exit code 137",
+      "reference": "Exit code 137 means the container was killed due to out-of-memory (OOM). The container exceeded its memory limit. Resolution steps: 1) Check memory allocation in ECS task definition, 2) Review CloudWatch Logs for memory usage patterns, 3) Increase memory limit in task definition (memory parameter), 4) Check for memory leaks in application code, 5) Enable container insights for detailed metrics. To fix: Modify task definition to increase memory from current value (e.g., 512MB to 1024MB), redeploy the service, and monitor memory usage. Consider using memory profiling tools to identify leaks.",
+      "prediction": "Warning: Connection timeout in Lambda response. Resolution steps below.:1) Verify connection with AWS Web Services (AWKS), 2): Log SQLCKs and logs from root user, 3] Check Elasticsearch integration for connections to external port 60900, 4\u2014keep redirection policy configured appropriately \u2014 ensure HTTPS proxy is running on interface #60903 ($docker run --rm /var/run/amazon-aws pyskrnlhf ) or 5\u2013update endpoint settings if required."
+    },
+    {
+      "prompt": "In CTRM-SAP integration: API Gateway CORS error in browser",
+      "reference": "CORS (Cross-Origin Resource Sharing) error occurs when browser blocks request from different origin. Symptoms: works in Postman but fails in browser, see CORS error in browser console. Resolution: 1) Enable CORS in API Gateway for the API resource, 2) Add CORS headers to Lambda response, 3) Handle OPTIONS preflight requests. Required headers: Access-Control-Allow-Origin (set to specific domain or *), Access-Control-Allow-Headers (Content-Type, Authorization, etc.), Access-Control-Allow-Methods (GET, POST, PUT, DELETE). In Lambda: return {'statusCode': 200, 'headers': {'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS'}, 'body': json.dumps(data)}. For OPTIONS requests, return 200 with CORS headers and empty body. Test from browser developer console.",
+      "prediction": "Answer : HTTP 403 indicates request not allowed. Resolution steps below.:1) Check CA's control group policy using AWS ADRS or BNSF, 2): Identify object access tokens (OAEN64), 3\u2014use GETs for token information and unique keys mapping to keyframes/fields, 4)\u2014create POST requests with objects allowing user interaction before controlling block blocks on the route path, 5\u2014\"object\" passphrase used when processing URL parameters(e., filename)."
+    },
+    {
+      "prompt": "In CTRM-SAP integration: SNS message not reaching SQS queue",
+      "reference": "SNS to SQS subscription issue. Messages published but not delivered. Resolution: 1) Check SNS subscription status is 'Confirmed', 2) Verify SQS queue policy allows SNS to send messages, 3) Check SNS topic subscription filter policy, 4) Review dead letter queue for SNS, 5) Verify message format matches subscription filter. SQS policy must allow: {\"Effect\": \"Allow\", \"Principal\": {\"Service\": \"sns.amazonaws.com\"}, \"Action\": \"sqs:SendMessage\", \"Resource\": \"queue-arn\", \"Condition\": {\"ArnEquals\": {\"aws:SourceArn\": \"topic-arn\"}}}. Check subscription filter if used - messages not matching filter are dropped. Monitor SNS metrics: NumberOfNotificationsFailed. Test with direct SQS send first to isolate SNS. Check SNS subscription endpoint is correct SQS queue ARN. Enable CloudWatch Logs for SNS delivery status.",
+      "prediction": "Answer : Urgent SMB reconnecting from SAP connection causing network error. Resolution steps below.:1) Identify connectivity problem in P2P request, 2): Create user account and login using AWS Console (click 'Create Account'), 3)."
+    },
+    {
+      "prompt": "Production issue: Lambda function timeout after 30 seconds",
+      "reference": "Lambda timeout indicates the function didn't complete within configured limit. Resolution: 1) Increase Lambda timeout in configuration (maximum 15 minutes), 2) Optimize code to run faster, 3) For longer operations, implement async pattern returning 202 Accepted immediately and processing in background, 4) Check if external dependencies (database, API) are slow. To increase timeout: AWS Console > Lambda > Configuration > General > Timeout, or CLI: aws lambda update-function-configuration --function-name my-func --timeout 300. For operations that legitimately take longer than 15 minutes, use Step Functions or push to SQS queue for async processing. Monitor CloudWatch metrics to identify bottlenecks.",
+      "prediction": "Answer: Function expired at 60 minutes. Error in code execution context, see CAPI documentation or application logs (see above). Resolution steps below:1) Check capi-cli returns 200 OK for API calling from S3 server - verify running on port 80, check endpoint middleware is active and working with prerequisites set, ensure connection to backend using AWS SQS account , test out rootkits before processing due to security issues, review request configuration if needed when reordering resources."
+    },
+    {
+      "prompt": "Production issue: Number range exhausted for document type SA",
+      "reference": "Number range exhausted is critical error preventing new postings. Occurs when all numbers in range are used. Resolution: 1) Check current number range using transaction FBN1, 2) Extend number range interval, 3) Create new number range if needed, 4) Plan for larger intervals in future. In FBN1: select company code 1000, select fiscal year 2024, select number range object RF_BELEG, click 'Change' button, increase 'To Number' in interval (e.g., from 999999999 to 9999999999), save. Immediate workaround: use different document type with available number range if business process allows. Prevention: Monitor number range usage monthly, set up alerts at 80% utilization, implement year-based number ranges, document number range strategy. For high-volume interfaces, use larger initial intervals.",
+      "prediction": "Answer: Error code 800 means the number has exceeded its allotted limit. Resolution steps below.:1) Check period independence using transaction KS00, 2): Identify SAP status in interface (e = avg), 3]: Notice error message indicating expiration date and task resolution timeout \u2013 see TXTKM2420#set_aviation(date). Common causes: VDBOutletError when last expired at line level or database connection not available due to network bottlenecks."
+    },
+    {
+      "prompt": "In CTRM-SAP integration: Lambda function timeout after 30 seconds",
+      "reference": "Lambda timeout indicates the function didn't complete within configured limit. Resolution: 1) Increase Lambda timeout in configuration (maximum 15 minutes), 2) Optimize code to run faster, 3) For longer operations, implement async pattern returning 202 Accepted immediately and processing in background, 4) Check if external dependencies (database, API) are slow. To increase timeout: AWS Console > Lambda > Configuration > General > Timeout, or CLI: aws lambda update-function-configuration --function-name my-func --timeout 300. For operations that legitimately take longer than 15 minutes, use Step Functions or push to SQS queue for async processing. Monitor CloudWatch metrics to identify bottlenecks.",
+      "prediction": "Solution Description : This problem occurs when using SAS API from SAP Gateway. When the number in response is too low, exit with 503 status code 403 and HTTP 200 OK for connection to where I wanted (e). Resolution steps:- Check external endpoint mapping on port 8024 , verify role middleware allows by default - Enable full access control over IP address or session keymap if available but limit roles explicitly."
+    },
+    {
+      "prompt": "RDS database connection timeout",
+      "reference": "Connection timeout indicates network or security group issues. Troubleshooting steps: 1) Verify security group allows inbound traffic on port 5432 (PostgreSQL) or 3306 (MySQL) from application security group, 2) Check connection string format and credentials, 3) Test connectivity from application server using telnet or psql/mysql client, 4) Verify NAT Gateway exists if database is in private subnet, 5) Check route tables for proper routing. Common fix: Add inbound rule to RDS security group allowing Custom TCP on port 5432 from source security group of application servers. Also verify the endpoint URL is correct and database instance is running.",
+      "prediction": "Connection refused due to security issue. Resolution steps:1) Identify SAP middleware from vendor control panel, 2): Enable HPC access in config file (see hpc-admin), 3\u20134 check for bugs before running, 4\u20145 Implement authentication using custom user interface and application configuration configured with correct SSO account ID, 6)\u20147 Prefer local SQS Gateway on port 6400 or better if required. For best results see Application Configuration section below.8)."
+    },
+    {
+      "prompt": "Error: Server responded with HTTP 403 Forbidden",
+      "reference": "HTTP 403 means the server refused to authorize your request. Common causes in CTRM-SAP: 1) Missing SAP authorization - check SU53 for details, 2) IP not whitelisted - verify network access, 3) Insufficient permissions - user may lack required role, 4) Resource access denied - verify you own the resource. Resolution: Check user authorizations in SAP using SU53, review role assignments with PFCG, confirm business unit access rights, verify authorization objects F_BKPF_BUK for company code and F_BKPF_GSB for business area.",
+      "prediction": "Answer: This means the server refused access to requested resource. Resolution steps described below resolve CTRM-related issues in CloudWatch integration or otherwise fail on purpose. Steps required for successful response : 1) Check client account password (common way), 2] Verify accounts are active, 3]: AWS Console asking permission at login prompt 4): Log into Account Type(DSB1), 5\u20138 retries from affected group using DSB2 > B3, 6> 10 minutes of user activity after timeout adjustment applied."
+    },
+    {
+      "prompt": "Need help: SAP BAPI error: Posting period 013 2024 is not open",
+      "reference": "This error occurs when trying to post to a closed fiscal period. Resolution: 1) Check period status using transaction OB52, 2) Open the posting period for the relevant company code and fiscal year, 3) Verify user has authorization to open periods, 4) Confirm fiscal year variant configuration. In OB52: Select company code 1000, click on period 013/2024, check both Account type '+' (all) and 'A' (assets), set status to 'Open', save changes. Preventive measure: Implement automated period opening process or calendar-based opening schedule. If period should remain closed, adjust posting date in the interface.",
+      "prediction": "Answer: This issue occurs when posting in the trading day format. Resolution steps below.:1) Verify post date expires before using, 2] Check 'Opening' option for correct trade deadline and 3): New Arrival Logs showing updated position data (date & time), 4> Enter contract/rewards with detailed information about company status, 5\u2013 Add description of current trades including stock price or commission cost. For example 1A03 - 0900 ALG 1040 AML 0% ($10BAPK)."
+    }
+  ]
+}

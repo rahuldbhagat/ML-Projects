@@ -1,0 +1,355 @@
+{
+  "bapi_errors": [
+    {
+      "error_code": "PERIOD_NOT_OPEN",
+      "message": "Posting period 013 2024 is not open",
+      "category": "POSTING",
+      "severity": "ERROR",
+      "causes": [
+        "Fiscal period not opened in SAP",
+        "Year-end closing in progress",
+        "Authorization to open period missing"
+      ],
+      "resolution_steps": [
+        "Check period status using transaction OB52",
+        "Open posting period for company code",
+        "Verify user has authorization to post",
+        "Confirm fiscal year variant configuration"
+      ],
+      "prevention": "Implement automated period opening process",
+      "related_tcodes": [
+        "OB52",
+        "FAGLGVTR"
+      ],
+      "sap_note": "SAP Note 0000101"
+    },
+    {
+      "error_code": "GLACCOUNT_NOT_FOUND",
+      "message": "G/L account 400000 does not exist in company code 1000",
+      "category": "MASTER_DATA",
+      "severity": "ERROR",
+      "causes": [
+        "G/L account not created in company code",
+        "Incorrect account number in mapping",
+        "Chart of accounts mismatch"
+      ],
+      "resolution_steps": [
+        "Verify G/L account exists using FS00",
+        "Create G/L account in company code if missing",
+        "Update interface mapping with correct account",
+        "Check chart of accounts assignment"
+      ],
+      "prevention": "Validate G/L accounts before interface mapping",
+      "related_tcodes": [
+        "FS00",
+        "FSP0"
+      ],
+      "sap_note": "SAP Note 0000102"
+    },
+    {
+      "error_code": "COSTCENTER_NOT_VALID",
+      "message": "Cost center ENERGY572 is not valid on 2024-01-15",
+      "category": "INTERFACE_MAPPING",
+      "severity": "ERROR",
+      "causes": [
+        "Cost center not active for posting date",
+        "Cost center expired or not created",
+        "Validity dates not configured correctly"
+      ],
+      "resolution_steps": [
+        "Check cost center validity in KS03",
+        "Extend validity period if needed using KS02",
+        "Verify cost center is assigned to correct company code",
+        "Update interface mapping with active cost center"
+      ],
+      "prevention": "Regular review of cost center validity periods",
+      "related_tcodes": [
+        "KS03",
+        "KS02",
+        "KSH1"
+      ],
+      "sap_note": "SAP Note 0000103"
+    },
+    {
+      "error_code": "AUTHORIZATION_MISSING",
+      "message": "No authorization for transaction FB01 in company code 1000",
+      "category": "AUTHORIZATION",
+      "severity": "ERROR",
+      "causes": [
+        "User lacks posting authorization",
+        "Company code not in authorization profile",
+        "Authorization object F_BKPF_BUK not maintained"
+      ],
+      "resolution_steps": [
+        "Check user authorizations using SU53",
+        "Add company code to user's authorization profile",
+        "Assign role with F_BKPF_BUK authorization",
+        "Test authorization using SU53 after changes"
+      ],
+      "prevention": "Regular authorization audits and reviews",
+      "related_tcodes": [
+        "SU53",
+        "PFCG",
+        "SU01"
+      ],
+      "sap_note": "SAP Note 0000104"
+    },
+    {
+      "error_code": "DOCUMENT_LOCKED",
+      "message": "Document 1400000000 2024 is locked by user SMITHJ",
+      "category": "CONCURRENCY",
+      "severity": "WARNING",
+      "causes": [
+        "Another user editing the document",
+        "Previous session not closed properly",
+        "System lock not released"
+      ],
+      "resolution_steps": [
+        "Wait for other user to finish editing",
+        "Check lock entries using SM12",
+        "Contact user to release lock",
+        "Delete lock entry if user confirms (SM12)"
+      ],
+      "prevention": "Implement proper session management",
+      "related_tcodes": [
+        "SM12",
+        "FB03"
+      ],
+      "sap_note": "SAP Note 0000105"
+    },
+    {
+      "error_code": "BALANCE_ZERO_ERROR",
+      "message": "Document is not balanced: debit 1000.00 credit 900.00",
+      "category": "POSTING",
+      "severity": "ERROR",
+      "causes": [
+        "Incorrect line item amounts",
+        "Rounding errors in calculation",
+        "Missing offsetting entry"
+      ],
+      "resolution_steps": [
+        "Verify debit and credit amounts match",
+        "Check for rounding errors in source system",
+        "Add missing line items to balance document",
+        "Review transformation logic"
+      ],
+      "prevention": "Implement balance validation before posting",
+      "related_tcodes": [
+        "FB01",
+        "FB03"
+      ],
+      "sap_note": "SAP Note 0000106"
+    },
+    {
+      "error_code": "TAX_CODE_INVALID",
+      "message": "Tax code V0 is not defined for country US",
+      "category": "CONFIGURATION",
+      "severity": "ERROR",
+      "causes": [
+        "Tax code not configured for country",
+        "Wrong tax code in mapping",
+        "Tax configuration incomplete"
+      ],
+      "resolution_steps": [
+        "Check tax code configuration using FTXP",
+        "Configure tax code for country if missing",
+        "Update interface mapping with correct tax code",
+        "Verify tax calculation procedure"
+      ],
+      "prevention": "Validate tax codes during interface setup",
+      "related_tcodes": [
+        "FTXP",
+        "OB40"
+      ],
+      "sap_note": "SAP Note 0000107"
+    },
+    {
+      "error_code": "VENDOR_BLOCKED",
+      "message": "Vendor 100234 is blocked for posting",
+      "category": "MASTER_DATA",
+      "severity": "ERROR",
+      "causes": [
+        "Vendor marked for deletion",
+        "Payment block set",
+        "Posting block activated"
+      ],
+      "resolution_steps": [
+        "Check vendor status using XK03",
+        "Remove posting block using XK02",
+        "Verify reason for block before removing",
+        "Contact procurement team if needed"
+      ],
+      "prevention": "Regular vendor master data reviews",
+      "related_tcodes": [
+        "XK03",
+        "XK02",
+        "FK03"
+      ],
+      "sap_note": "SAP Note 0000108"
+    },
+    {
+      "error_code": "PROFIT_CENTER_MISSING",
+      "message": "Enter profit center for G/L account 500000",
+      "category": "INTERFACE_MAPPING",
+      "severity": "ERROR",
+      "causes": [
+        "Profit center required but not provided",
+        "G/L account requires profit center",
+        "Interface mapping incomplete"
+      ],
+      "resolution_steps": [
+        "Check G/L account master for profit center requirement (FS00)",
+        "Add profit center to interface mapping",
+        "Verify profit center is active (KE53)",
+        "Update transformation logic to include profit center"
+      ],
+      "prevention": "Validate required fields in interface mapping",
+      "related_tcodes": [
+        "FS00",
+        "KE53",
+        "KE52"
+      ],
+      "sap_note": "SAP Note 0000109"
+    },
+    {
+      "error_code": "NUMBER_RANGE_EXHAUSTED",
+      "message": "Number range 01 for document type SA in 2024 is exhausted",
+      "category": "CONFIGURATION",
+      "severity": "CRITICAL",
+      "causes": [
+        "Number range limit reached",
+        "Number range not extended",
+        "High volume of postings"
+      ],
+      "resolution_steps": [
+        "Check number range using FBN1",
+        "Extend number range using FBN1",
+        "Create new number range interval if needed",
+        "Plan for larger intervals in future"
+      ],
+      "prevention": "Monitor number range usage regularly",
+      "related_tcodes": [
+        "FBN1",
+        "SNUM"
+      ],
+      "sap_note": "SAP Note 0000110"
+    },
+    {
+      "error_code": "CURRENCY_MISMATCH",
+      "message": "Currency USD does not match company code currency EUR",
+      "category": "POSTING",
+      "severity": "ERROR",
+      "causes": [
+        "Transaction currency different from local currency",
+        "Exchange rate not maintained",
+        "Multi-currency posting configuration issue"
+      ],
+      "resolution_steps": [
+        "Verify exchange rate exists for date (OB08)",
+        "Maintain exchange rate if missing",
+        "Use document currency field for foreign currency",
+        "Check company code currency configuration"
+      ],
+      "prevention": "Automated exchange rate updates",
+      "related_tcodes": [
+        "OB08",
+        "OB22",
+        "S_BCE_68000174"
+      ],
+      "sap_note": "SAP Note 0000111"
+    },
+    {
+      "error_code": "PAYMENT_TERMS_INVALID",
+      "message": "Payment terms Z030 is not defined",
+      "category": "MASTER_DATA",
+      "severity": "ERROR",
+      "causes": [
+        "Payment terms not configured",
+        "Incorrect payment terms code",
+        "Payment terms deleted"
+      ],
+      "resolution_steps": [
+        "Check payment terms configuration using OBB8",
+        "Create payment terms if missing",
+        "Update interface mapping with valid payment terms",
+        "Verify payment terms in vendor master"
+      ],
+      "prevention": "Standardize payment terms across systems",
+      "related_tcodes": [
+        "OBB8",
+        "XK03"
+      ],
+      "sap_note": "SAP Note 0000112"
+    },
+    {
+      "error_code": "BUSINESS_AREA_REQUIRED",
+      "message": "Enter business area for G/L account 600000",
+      "category": "INTERFACE_MAPPING",
+      "severity": "ERROR",
+      "causes": [
+        "Business area mandatory for account",
+        "Interface mapping missing business area",
+        "Configuration requires business area"
+      ],
+      "resolution_steps": [
+        "Check G/L account settings (FS00)",
+        "Add business area to interface mapping",
+        "Verify business area exists and is active",
+        "Update transformation to include business area"
+      ],
+      "prevention": "Complete field requirement analysis",
+      "related_tcodes": [
+        "FS00",
+        "SPRO"
+      ],
+      "sap_note": "SAP Note 0000113"
+    },
+    {
+      "error_code": "COMMITMENT_ITEM_MISSING",
+      "message": "Enter commitment item for cost center ENERGY572",
+      "category": "INTERFACE_MAPPING",
+      "severity": "ERROR",
+      "causes": [
+        "Commitment item required for cost center",
+        "Funds management active",
+        "Interface mapping incomplete"
+      ],
+      "resolution_steps": [
+        "Check cost center for commitment item requirement (KS03)",
+        "Add commitment item to interface mapping",
+        "Verify funds management configuration",
+        "Consult with finance team on correct commitment item"
+      ],
+      "prevention": "Document funds management requirements",
+      "related_tcodes": [
+        "KS03",
+        "FM5S"
+      ],
+      "sap_note": "SAP Note 0000114"
+    },
+    {
+      "error_code": "ASSIGNMENT_FIELD_TOO_LONG",
+      "message": "Assignment field exceeds maximum length of 18 characters",
+      "category": "VALIDATION",
+      "severity": "ERROR",
+      "causes": [
+        "Source data too long",
+        "Field mapping incorrect",
+        "No truncation logic implemented"
+      ],
+      "resolution_steps": [
+        "Review source data format",
+        "Implement truncation in transformation logic",
+        "Use abbreviations or codes instead of full text",
+        "Document field length limitations"
+      ],
+      "prevention": "Validate field lengths in transformation layer",
+      "related_tcodes": [
+        "FB01"
+      ],
+      "sap_note": "SAP Note 0000115"
+    }
+  ],
+  "last_updated": "2024-02-20",
+  "version": "1.0"
+}

@@ -1,0 +1,17 @@
+{
+  "total_generated": 1500,
+  "by_category": {
+    "INTERFACE_MAPPING": 50,
+    "HTTP_ERRORS": 50,
+    "ARCHITECTURE": 400,
+    "SAP": 450,
+    "INTEGRATION": 350,
+    "PERFORMANCE": 200
+  },
+  "by_difficulty": {
+    "intermediate": 900,
+    "advanced": 400,
+    "beginner": 200
+  },
+  "generation_time": "0:00:00.018004"
+}
